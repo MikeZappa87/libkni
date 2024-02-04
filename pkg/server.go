@@ -42,13 +42,13 @@ func NewDefaultKNIServer(sockAddr, protocol string, config cni.KNIConfig) error 
 
 	server := grpc.NewServer()
 
-	cni, err := cni.NewKniService(&config)
+	srv, err := cni.NewKniService(&config)
 
 	if err != nil {
 		return err
 	}
-
-	beta.RegisterKNIServer(server, cni)
+	
+	beta.RegisterKNIServer(server, srv)
 
 	return server.Serve(listener)
 }

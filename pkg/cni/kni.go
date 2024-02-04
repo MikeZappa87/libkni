@@ -24,6 +24,15 @@ type KNICNIService struct {
 	config KNIConfig
 }
 
+func CreateDefaultConfig() KNIConfig {
+	return KNIConfig{
+		IfPrefix: "eth",
+		Db: "net.db",
+		CNIBin: "/opt/cni/bin",
+		CNIConf: "/etc/cni/net.d",
+	}
+}
+
 func NewKniService(config *KNIConfig) (beta.KNIServer, error) {
 	log.Info("starting kni network runtime service")
 
