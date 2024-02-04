@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/MikeZappa87/kni-api/pkg/apis/runtime/beta"
-	"github.com/mikezappa87/libkni/pkg/cni"
+	"github.com/MikeZappa87/libkni/pkg/cni"
 	"google.golang.org/grpc"
 )
 

@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/MikeZappa87/kni-api/pkg/apis/runtime/beta"
+	"github.com/MikeZappa87/libkni/pkg/netns"
 	"github.com/containerd/go-cni"
-	"github.com/mikezappa87/libkni/pkg/netns"
 	log "github.com/sirupsen/logrus"
 )
 
