@@ -131,7 +131,7 @@ func (k *KNICNIService) DeleteNetwork(ctx context.Context, req *beta.DeleteNetwo
 	return &beta.DeleteNetworkResponse{}, nil
 }
 
-func (k *KNICNIService) AttachNetwork(ctx context.Context, req *beta.AttachNetworkRequest) (*beta.AttachNetworkResponse, error) {
+func (k *KNICNIService) AttachInterface(ctx context.Context, req *beta.AttachInterfaceRequest) (*beta.AttachInterfaceResponse, error) {
 	log.Infof("attach rpc request for id %s", req.Id)
 
 	opts, err := cniNamespaceOpts(req.Id, req.Name, req.Namespace, "", req.Labels,
@@ -192,12 +192,12 @@ func (k *KNICNIService) AttachNetwork(ctx context.Context, req *beta.AttachNetwo
 		return nil, err
 	}
 
-	return &beta.AttachNetworkResponse{
+	return &beta.AttachInterfaceResponse{
 		Ipconfigs: store.IP,
 	}, nil
 }
 
-func (k *KNICNIService) DetachNetwork(ctx context.Context, req *beta.DetachNetworkRequest) (*beta.DetachNetworkResponse, error) {
+func (k *KNICNIService) DetachInterface(ctx context.Context, req *beta.DetachInterfaceRequest) (*beta.DetachInterfaceResponse, error) {
 	log.Infof("detach rpc request for id %s", req.Id)
 
 	opts := []cni.NamespaceOpts{
@@ -230,7 +230,7 @@ func (k *KNICNIService) DetachNetwork(ctx context.Context, req *beta.DetachNetwo
 		return nil, err
 	}
 
-	return &beta.DetachNetworkResponse{}, nil
+	return &beta.DetachInterfaceResponse{}, nil
 }
 
 func (k *KNICNIService) SetupNodeNetwork(context.Context, *beta.SetupNodeNetworkRequest) (*beta.SetupNodeNetworkResponse, error) {

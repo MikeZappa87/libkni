@@ -3,7 +3,7 @@ module github.com/MikeZappa87/libkni
 go 1.21.5
 
 require (
-	github.com/MikeZappa87/kni-api v0.0.7-0.20240201220129-cdea46f36b48
+	github.com/MikeZappa87/kni-api v0.0.8
 	github.com/containerd/containerd v1.7.13
 	github.com/containerd/cri-containerd v1.19.0
 	github.com/containerd/go-cni v1.1.9
