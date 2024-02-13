@@ -12,10 +12,10 @@ import (
 )
 
 type KNIConfig struct {
-	IfPrefix    string
-	Db          string
-	CNIBin      string
-	CNIConf     string
+	IfPrefix string
+	Db       string
+	CNIBin   string
+	CNIConf  string
 }
 
 type KNICNIService struct {
@@ -27,9 +27,9 @@ type KNICNIService struct {
 func CreateDefaultConfig() KNIConfig {
 	return KNIConfig{
 		IfPrefix: "eth",
-		Db: "net.db",
-		CNIBin: "/opt/cni/bin",
-		CNIConf: "/etc/cni/net.d",
+		Db:       "net.db",
+		CNIBin:   "/opt/cni/bin",
+		CNIConf:  "/etc/cni/net.d",
 	}
 }
 
@@ -38,7 +38,7 @@ func NewKniService(config *KNIConfig) (beta.KNIServer, error) {
 
 	opts := []cni.Opt{
 		cni.WithLoNetwork,
-		cni.WithAllConf}
+		cni.WithDefaultConf}
 
 	initopts := []cni.Opt{
 		cni.WithMinNetworkCount(2),
@@ -80,7 +80,7 @@ func NewKniService(config *KNIConfig) (beta.KNIServer, error) {
 
 func (k *KNICNIService) CreateNetwork(ctx context.Context, req *beta.CreateNetworkRequest) (*beta.CreateNetworkResponse, error) {
 	ns, err := netns.NewNetNS("/run/netns", fmt.Sprintf("kni-%s-%s", req.Namespace, req.Name))
-	
+
 	if err != nil {
 		log.Errorf("unable to create netns: %s name: %s namespace: %s", err.Error(), req.Name, req.Namespace)
 		return nil, err
@@ -90,7 +90,7 @@ func (k *KNICNIService) CreateNetwork(ctx context.Context, req *beta.CreateNetwo
 
 	return &beta.CreateNetworkResponse{
 		NetnsPath: ns.GetPath(),
-	}, nil 
+	}, nil
 }
 
 func (k *KNICNIService) DeleteNetwork(ctx context.Context, req *beta.DeleteNetworkRequest) (*beta.DeleteNetworkResponse, error) {
@@ -98,7 +98,7 @@ func (k *KNICNIService) DeleteNetwork(ctx context.Context, req *beta.DeleteNetwo
 
 	if req.Id != "" {
 		data, err := k.store.Query(req.Id)
-	
+
 		if err != nil {
 			log.Errorf("unable retrieve sandbox information for %s", req.Id)
 			return nil, err
@@ -135,9 +135,9 @@ func (k *KNICNIService) AttachInterface(ctx context.Context, req *beta.AttachInt
 	log.Infof("attach rpc request for id %s", req.Id)
 
 	opts, err := cniNamespaceOpts(req.Id, req.Name, req.Namespace, "", req.Labels,
-	 req.Annotations, req.Extradata, req.PortMappings, req.DnsConfig)
+		req.Annotations, req.Extradata, req.PortMappings, req.DnsConfig)
 
-	 if err != nil {
+	if err != nil {
 		return nil, err
 	}
 
