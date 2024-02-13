@@ -12,10 +12,11 @@ import (
 )
 
 type KNIConfig struct {
-	IfPrefix string
-	Db       string
-	CNIBin   string
-	CNIConf  string
+	IfPrefix       string
+	Db             string
+	CNIBin         string
+	CNIConf        string
+	LoadAllConfigs bool
 }
 
 type KNICNIService struct {
@@ -26,19 +27,35 @@ type KNICNIService struct {
 
 func CreateDefaultConfig() KNIConfig {
 	return KNIConfig{
-		IfPrefix: "eth",
-		Db:       "net.db",
-		CNIBin:   "/opt/cni/bin",
-		CNIConf:  "/etc/cni/net.d",
+		IfPrefix:       "eth",
+		Db:             "net.db",
+		CNIBin:         "/opt/cni/bin",
+		CNIConf:        "/etc/cni/net.d",
+		LoadAllConfigs: false,
 	}
 }
 
-func NewKniService(config *KNIConfig) (beta.KNIServer, error) {
+func NewKniServiceWithAllConfigs(config *KNIConfig) (beta.KNIServer, error) {
 	log.Info("starting kni network runtime service")
 
+	return Build(config)
+}
+
+func NewKniService(config *KNIConfig) (beta.KNIServer, error) {
+	return Build(config)
+}
+
+func Build(config *KNIConfig) (beta.KNIServer, error) {
 	opts := []cni.Opt{
 		cni.WithLoNetwork,
-		cni.WithDefaultConf}
+	}
+
+	if config.LoadAllConfigs {
+		opts = append(opts, cni.WithAllConf)
+
+	} else {
+		opts = append(opts, cni.WithAllConf)
+	}
 
 	initopts := []cni.Opt{
 		cni.WithMinNetworkCount(2),
