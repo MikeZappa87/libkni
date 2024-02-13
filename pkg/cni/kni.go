@@ -54,7 +54,7 @@ func Build(config *KNIConfig) (beta.KNIServer, error) {
 		opts = append(opts, cni.WithAllConf)
 
 	} else {
-		opts = append(opts, cni.WithAllConf)
+		opts = append(opts, cni.WithDefaultConf)
 	}
 
 	initopts := []cni.Opt{
